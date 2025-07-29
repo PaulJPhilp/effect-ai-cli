@@ -1,0 +1,45 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+# pnpm-lock.yaml # <--- UNCOMMENT THIS LINE ONLY IF YOU EXPLICITLY DO NOT WANT TO COMMIT YOUR LOCKFILE (VERY RARE FOR CONSISTENCY)
+
+# Build artifacts
+dist/
+build/
+*.js.map # Source maps for JS files
+*.d.ts   # Compiled TypeScript declaration files (often generated in dist)
+
+# Environment variables
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Logs
+logs/
+*.log
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Editor/IDE specific
+.vscode/ # VS Code specific settings (user-specific, not always shared)
+.idea/   # IntelliJ/WebStorm project files
+*.sublime-project
+*.sublime-workspace
+.DS_Store # macOS specific
+Thumbs.db # Windows specific
+
+# CLI specific (based on our design)
+runs/ # Directory for AI run outputs
+
+# Miscellaneous
+*.tgz # Packaged tarballs
+*.swp # Vim swap files
+.eslintcache # ESLint cache (if still using ESLint anywhere)
+.cache/ # General cache directories
