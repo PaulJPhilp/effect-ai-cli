@@ -8,12 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial CLI framework with Effect-TS architecture
-- AI integration with multiple providers (OpenAI, Anthropic, Google)
-- Run management and metrics tracking
-- OpenTelemetry integration for observability
-- Configuration and authentication management
-- Comprehensive command suite for AI operations
+- N/A
 
 ### Changed
 - N/A
@@ -28,6 +23,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - N/A
 
 ### Security
+- N/A
+
+## [0.1.1] - 2025-08-14
+
+### Fixed
+- **CLI Execution Bug**: Fixed CLI not executing when invoked via binary
+  - The CLI was only running when `process.argv[1]` ended with `main.js`
+  - Now properly detects execution via binary files (`effect-ai-cli.js`, `effect-ai`)
+  - Users can now successfully run `effect-ai-cli --help` and other commands
+
+### Changed
+- N/A
+
+### Added
 - N/A
 
 ## [0.1.0] - 2025-01-14
