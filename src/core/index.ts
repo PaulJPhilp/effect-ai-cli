@@ -1,10 +1,11 @@
-import { Command, Options } from "@effect/cli";
+import { Command, HelpDoc, Options, ValidationError } from "@effect/cli";
 import { Effect } from "effect";
 import { runWithAppropriateRuntime } from "../runtime/runtime-selector.js";
 
 // Use `any` for Name and Config due to variance in @effect/cli Command type,
 // which otherwise rejects heterogeneous literal names/config shapes.
 // Keep R and E as unknown to avoid widening effectful environment/error types.
+
 type AnyCommand = Command.Command<any, unknown, unknown, any>;
 
 export interface CliPlugin {
@@ -64,10 +65,77 @@ export function createCli(options: CreateCliOptions) {
 }
 
 export function runCli(root: AnyCommand, argv = process.argv) {
-  const cli = Command.run(root, { name: "Effect CLI", version: "0.0.0" });
-  const mainEffect = cli(argv);
+  const cli = Command.run(root, { name: "Effect CLI", version: "0.1.2" });
+
+  const mainEffect = cli(argv).pipe(
+    Effect.catchAll((err: unknown) => {
+      // Handle different types of validation errors from @effect/cli
+      if (
+
+        ValidationError.isInvalidValue(err as any) &&
+        typeof (err as { error?: unknown }).error !== "undefined"
+      ) {
+        // Pretty-print the help doc for invalid value errors
+        return Effect.sync(() => {
+          const error = (err as { error?: unknown }).error;
+          if (error && error !== null) {
+
+            console.error(HelpDoc.toAnsiDoc(error as any));
+          } else {
+            console.error("Invalid value");
+          }
+          process.exitCode = 2;
+        });
+      }
+      if (
+        ValidationError.isMissingValue(err as any)
+      ) {
+        // Handle missing value errors
+        return Effect.sync(() => {
+          const errorMsg =
+            typeof (err as { error?: unknown }).error === "string"
+              ? (err as { error?: unknown }).error
+              : "Missing required argument";
+          console.error(`Error: ${errorMsg}`);
+          process.exitCode = 2;
+        });
+      }
+      if (
+        ValidationError.isMissingFlag(err as any)
+      ) {
+        // Handle missing flag errors
+        return Effect.sync(() => {
+          const errorMsg =
+            typeof (err as { error?: unknown }).error === "string"
+              ? (err as { error?: unknown }).error
+              : "Missing required flag";
+          console.error(`Error: ${errorMsg}`);
+          process.exitCode = 2;
+        });
+      }
+      if (
+        ValidationError.isInvalidArgument(err as any)
+      ) {
+        // Handle invalid argument errors
+        return Effect.sync(() => {
+          const errorMsg =
+            typeof (err as { error?: unknown }).error === "string"
+              ? (err as { error?: unknown }).error
+              : "Missing required argument";
+          console.error(`Error: ${errorMsg}`);
+          process.exitCode = 2;
+        });
+      }
+      // Handle other errors
+      return Effect.sync(() => {
+        console.error(`Error: ${String(err)}`);
+        process.exitCode = 1;
+      });
+    })
+  );
+
   return runWithAppropriateRuntime(
-    mainEffect as Effect.Effect<never, unknown, never>,
+    mainEffect as Effect.Effect<void, never, never>,
     argv
   );
 }

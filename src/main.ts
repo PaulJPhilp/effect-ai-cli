@@ -1,6 +1,9 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
+// Version - update this when publishing new versions
+const version = "0.1.2";
+
 import { applyPromptToDir } from "./commands/apply-prompt-to-dir.js";
 import { authCommand } from "./commands/auth.js";
 import { configCommand } from "./commands/config.js";
@@ -24,7 +27,7 @@ import { createCli, runCli } from "./core/index.js";
 // Compose CLI via core factory
 export const rootCli = createCli({
   name: "effect-ai",
-  version: "1.0.0",
+  version,
   commands: [
     effectPatternsList,
     dryRun,

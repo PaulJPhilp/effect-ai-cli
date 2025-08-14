@@ -1,7 +1,6 @@
+import { Command, Options } from "@effect/cli";
 import { Console, Effect, Option } from "effect";
 import { writeFileSync } from "node:fs";
-import { Command } from "@effect/cli";
-import { Options } from "@effect/cli";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - TS resolves .js to .ts in this repo config
 import { OutputHandlerService } from "../services/output-handler/service.js";
@@ -9,7 +8,8 @@ import type { OutputOptions } from "../services/output-handler/types.js";
 
 // Wraps an effect to log an error with a prefixed message and rethrow.
 // Keeps the same error surface; only centralizes the catch/log mechanics.
-export const withErrorLogging = (prefix: string) =>
+export const withErrorLogging =
+  (prefix: string) =>
   <A>(eff: Effect.Effect<A, any, any>): Effect.Effect<A, any, any> =>
     eff.pipe(
       Effect.catchAll((error: any) =>
@@ -64,24 +64,22 @@ export const printJson = (
   value: unknown,
   compact: boolean,
   options?: OutputOptions
-) =>
-  Effect.gen(function* () {
-    const json = JSON.stringify(value, null, compact ? undefined : 2);
-    const merged: OutputOptions = {
-      ...(GLOBAL_OUTPUT_OPTIONS ?? {}),
-      ...(options ?? {}),
-    } as OutputOptions;
-    try {
-      const svc = yield* OutputHandlerService;
-      yield* svc.outputText(json, merged);
-    } catch {
-      if (merged.outputFile) {
-        writeFileSync(merged.outputFile, json, "utf-8");
-      } else {
-        yield* Effect.log(json);
-      }
-    }
-  });
+) => {
+  const json = JSON.stringify(value, null, compact ? undefined : 2);
+  const merged: OutputOptions = {
+    ...(GLOBAL_OUTPUT_OPTIONS ?? {}),
+    ...(options ?? {}),
+  } as OutputOptions;
+
+  if (merged.outputFile) {
+    // Write to file directly
+    writeFileSync(merged.outputFile, json, "utf-8");
+    return;
+  }
+
+  // For stdout output, bypass logger to avoid double-serialization
+  (process.stdout as any).write(`${json}\n`);
+};
 
 // Shared option builders
 export const optQuiet = (desc = "Suppress output") =>
@@ -122,8 +120,7 @@ export const setGlobalCompact = (value: boolean | undefined) => {
   GLOBAL_COMPACT_FLAG = value;
 };
 
-export const getGlobalCompact = (): boolean =>
-  GLOBAL_COMPACT_FLAG === true;
+export const getGlobalCompact = (): boolean => GLOBAL_COMPACT_FLAG === true;
 
 // Helper for command groups: sets shared flags and wires description.
 export const makeCommandGroup = (

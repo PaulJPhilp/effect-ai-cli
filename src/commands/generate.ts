@@ -334,7 +334,7 @@ function generateHandler({
           timestamp: new Date().toISOString(),
         };
         const resolvedOutput = getGlobalOutputOptions()?.outputFile;
-        yield* printJson(
+        printJson(
           perCommandOutput,
           getGlobalCompact(),
           resolvedOutput ? { outputFile: resolvedOutput } : undefined

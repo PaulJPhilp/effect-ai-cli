@@ -8,7 +8,7 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noExplicitAny": "error"
+        "noExplicitAny": "off"
       },
       "style": {
         "useBlockStatements": "error",

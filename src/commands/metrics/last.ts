@@ -35,7 +35,7 @@ export const metricsLast = Command.make(
       const last = yield* metrics.getMetrics();
       if (last._tag === "None") {
         if (asJson) {
-          yield* printJson(
+          printJson(
             { last: null },
             getGlobalCompact(),
             outputFile ? { outputFile } : undefined
@@ -51,7 +51,7 @@ export const metricsLast = Command.make(
 
       const run = last.value;
       if (asJson) {
-        yield* printJson(
+        printJson(
           { last: run },
           getGlobalCompact(),
           outputFile ? { outputFile } : undefined

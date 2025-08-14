@@ -144,7 +144,7 @@ export const effectPatternsList = makeCommand(
           files,
           timestamp: new Date().toISOString(),
         };
-        yield* printJson(
+        printJson(
           jsonPayload,
           getGlobalCompact(),
           resolvedOutput ? { outputFile: resolvedOutput } : undefined
