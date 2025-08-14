@@ -15,7 +15,6 @@ import { ProductionRuntime } from "./production-runtime.js";
  */
 const MINIMAL_RUNTIME_COMMANDS = new Set([
   "echo",
-  "health",
   "trace",
   "list",
   "config",
