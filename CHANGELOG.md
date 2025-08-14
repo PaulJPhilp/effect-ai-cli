@@ -25,6 +25,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - N/A
 
+## [0.1.2] - 2025-08-14
+
+### Changed
+- **Health Command Runtime**: Moved health command from minimal to production runtime
+  - Health command now has access to AI services for proper provider connectivity checks
+  - Ensures health checks can verify API keys and model availability
+
+### Added
+- N/A
+
 ## [0.1.1] - 2025-08-14
 
 ### Fixed
