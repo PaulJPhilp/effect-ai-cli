@@ -153,6 +153,12 @@ src/
 
 See [CONTRIBUTING.md](Contributing.md) for development guidelines.
 
+## Release Process
+
+- [CHANGELOG.md](CHANGELOG.md) - Version history and changes
+- [docs/SEMANTIC_VERSIONING.md](docs/SEMANTIC_VERSIONING.md) - Versioning strategy and policies
+- [docs/RELEASE_WORKFLOW.md](docs/RELEASE_WORKFLOW.md) - Release process and workflow
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

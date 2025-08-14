@@ -69,6 +69,12 @@ export {
 };
 
 // Only run CLI if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Check if this module is being run directly by checking the script name
+const isMainModule = process.argv[1] && (
+  process.argv[1].endsWith("main.js") || 
+  process.argv[1].endsWith("effect-ai-cli.js") ||
+  process.argv[1].endsWith("effect-ai")
+);
+if (isMainModule) {
   runCli(rootCli);
 }
