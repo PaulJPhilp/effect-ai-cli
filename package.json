@@ -1,31 +1,66 @@
 {
   "name": "effect-ai-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@effect/ai": "^0.25.0",
-    "@effect/cli": "^0.69.0",
-    "@effect/platform-node": "^0.94.0",
-    "dotenv": "^17.2.1",
-    "effect": "^3.17.3",
-    "gray-matter": "^4.0.3"
+  "version": "0.1.0",
+  "description": "Effect-based AI CLI with pluggable models and observability",
+  "license": "MIT",
+  "type": "module",
+  "private": false,
+  "bin": {
+    "effect-ai": "./dist/bin/effect-ai-cli.js",
+    "effect-ai-cli": "./dist/bin/effect-ai-cli.js"
   },
-  "devDependencies": {
-    "@vitest/coverage-v8": "^3.2.4",
-    "biome": "^0.3.3",
-    "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/main.js",
+      "types": "./dist/main.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
   },
   "scripts": {
-    "build": "tsc --build",
-    "start": "node dist/index.js",
-    "dev": "tsx watch src/index.ts",
-    "lint": "biome check .",
-    "lint:fix": "biome check --apply .",
-    "format": "biome format --write ."
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json --watch",
+    "clean": "rimraf dist",
+    "dev": "bun run --watch src/main.ts",
+    "start": "bun run src/main.ts",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format --write .",
+    "type-check": "tsc --noEmit",
+    "prepare": "bun run build"
+  },
+  "dependencies": {
+    "@effect/ai-anthropic": "^0.15.1",
+    "@effect/ai-google": "^0.4.0",
+    "@effect/ai-openai": "^0.28.2",
+    "@effect/cli": "^0.69.0",
+    "@effect/platform": "^0.90.2",
+    "@effect/platform-node": "^0.90.0",
+    "@opentelemetry/api": "^1.9.0",
+    "cli-table3": "^0.6.5",
+    "dotenv": "^16.6.1",
+    "effect": "^3.17.7",
+    "liquidjs": "^10.21.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "tsx": "^4.20.4",
+    "rimraf": "^5.0.10",
+    "vitest": "^2.1.9",
+    "@vitest/ui": "^2.1.9",
+    "@vitest/coverage-v8": "^2.1.9",
+    "@biomejs/biome": "^1.9.4"
   }
 }
